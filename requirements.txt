@@ -1,0 +1,7 @@
+torch
+torchvision
+transformers
+Pillow
+sentence-transformers
+open-clip-torch
+multilingual-clip
