@@ -1,11 +1,13 @@
 # Babel-ImageNet
-This is the repository for our benchmark [TITLE](url).
+This is the repository for our benchmark [Babel-ImageNet: Massively Multilingual Evaluation of Vision-and-Language Representations](url).
 
 ## Usage
 
 
 ### Using the benchmark
-We release the Babel-ImageNet labels [here](data/babel_imagenet.json). We also release the prompts translated with NLLB-1.3b-distilled [here](data/nllb_dist13b_prompts.json).
+We release the Babel-ImageNet labels [here](data/babel_imagenet.json). The JSON is a dictionary mapping each ISO language code to a tuple with 1) the indices of classes as they appear in ImageNet-1k and 2) the class label names.
+
+We also release the prompts translated with NLLB-1.3b-distilled [here](data/nllb_dist13b_prompts.json).
 
 Babel-ImageNet includes *only the labels* for the ImageNet classes - you need to download the images yourself.
 
@@ -57,7 +59,7 @@ Our code is licensed under the MIT license.
 If you find this benchmark helpful, please cite the following publication:
 
 ```
-TODO
+
 ```
 
 Also consider citing the following:
