@@ -1,5 +1,5 @@
 # Babel-ImageNet
-This is the repository for our benchmark [Babel-ImageNet: Massively Multilingual Evaluation of Vision-and-Language Representations](url).
+This is the repository for our benchmark [Babel-ImageNet: Massively Multilingual Evaluation of Vision-and-Language Representations](https://arxiv.org/abs/2306.08658).
 
 ## Usage
 
@@ -59,7 +59,18 @@ Our code is licensed under the MIT license.
 If you find this benchmark helpful, please cite the following publication:
 
 ```
-
+@article{geigle2023babelimagenet,
+  author       = {Gregor Geigle and
+                  Radu Timofte and
+                  Goran Glava\v{s}},
+  title        = {{B}abel-{I}mage{N}et: Massively Multilingual Evaluation of Vision-and-Language Representations},
+  journal      = {arXiv},
+  volume       = {abs/2306.08658},
+  year         = {2023},
+  url          = {https://arxiv.org/abs/2306.08658},
+  eprinttype    = {arXiv},
+  eprint       = {2306.08658},
+}
 ```
 
 Also consider citing the following:
