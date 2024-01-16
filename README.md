@@ -1,10 +1,35 @@
 # Babel-ImageNet
 This is the repository for our benchmark [Babel-ImageNet: Massively Multilingual Evaluation of Vision-and-Language Representations](https://arxiv.org/abs/2306.08658).
 
+## About
+Vision-and-language (VL) models with separate encoders for each modality (e.g., CLIP) have become the go-to models for zero-shot image classification and image-text retrieval. 
+The bulk of the evaluation of these models is, however, performed with English text only: the costly creation of language-specific image-caption datasets has limited multilingual VL benchmarks to a handful of high-resource languages.  
+
+We introduce Babel-ImageNet, a massively multilingual benchmark that offers (partial) translations of 1000 ImageNet labels to 92 languages, built without resorting to machine translation (MT) or requiring manual annotation. 
+We instead automatically obtain reliable translations of ImageNet concepts by linking them -- via shared WordNet synsets -- to BabelNet, a massively multilingual lexico-semantic network.
+
+We evaluate ~~8~~ 13 different publicly available multilingual CLIP models on zero-shot image classification (ZS-IC) for each of the 92 Babel-ImageNet languages, demonstrating a significant gap between English ImageNet performance and that of high-resource languages (e.g., German or Chinese), and an even bigger gap for low-resource languages (e.g., Sinhala or Lao). 
+Crucially, we show that the models' ZS-IC performance on Babel-ImageNet highly correlates with their performance in image-text retrieval, validating that Babel-ImageNet is suitable for estimating the quality of the multilingual VL representation spaces for the vast majority of languages that lack gold image-text data.  
+
+
+## Results
+We benchmarked (pretty much) all public multilingual CLIP models on Babel-ImageNet and 
+on three multilingual image-text retrieval datasets. 
+Raw results are [here](results).
+
+We prepared a [notebook](evaluation_scripts/results_analysis.ipynb) for easy browsing and analysis of the results.
+
+
+
 ## Usage
 
+### Setup
 
-### Using the benchmark
+We list the packages needed in [requirements.txt](requirements.txt). 
+Both newer and older version *probably* work but use the specified version on problems.
+
+
+### Data Preparation
 We release the Babel-ImageNet labels [here](data/babel_imagenet.json). The JSON is a dictionary mapping each ISO language code to a tuple with 1) the indices of classes as they appear in ImageNet-1k and 2) the class label names.
 
 We also release the prompts translated with NLLB-1.3b-distilled [here](data/nllb_dist13b_prompts.json).
@@ -13,25 +38,45 @@ Babel-ImageNet includes *only the labels* for the ImageNet classes - you need to
 
 Labels and prompts can be used in your code as (nearly) drop-in replacement for standard ImageNet zero-shot evaluation with OpenAI's labels and prompts. You only need to take care to process the images of the language subset of classes - see the class [BabelImageNet](eval_scripts/data.py) for an example on how to do this using the torchvision ImageNet dataset.
 
-### Evaluation code
-[eval.py](eval_scripts/eval.py) is an efficient* script to evaluate Babel-ImageNet on many languages at once (by caching image embeddings).
-The models used in our paper are ready for evaluation and adding your own model is quite straightforward.
 
-*Evaluating OpenCLIP ViT-B32 on all languages with labels, English prompts and MT prompts on a RTX 3090 takes <40min (~5min for image encoding and then a few second per language+prompt).
+#### Retrieval
+We offer the option to evaluate models for retrieval for XTD, XM3600, and xFlickrCo but you need to download the images (MSCOCO, Flickr30k, XM3600) yourself.
 
-See [requirements.txt](requirements.txt) for necessary packages. AltCLIP has no corresponding package, so get the code [here](https://github.com/FlagAI-Open/FlagAI/tree/master/examples/AltCLIP/hf_altclip).
+
+### Evaluation
+
+[run_eval.py](run_eval.py) and [run_retrieval.py](run_retrieval.py) are simple CLI tools to evaluate your model:
+
+#### Babel-ImageNet
+
 
 ```shell
-python eval_scripts/eval.py \
---imagenet_folder /PATH/TO/IMAGENET/val
+python run_eval.py --imagenet_folder=$imagenet_folder --prompts="label,nllb_dist13b_prompts" --languages="298" \
+  --num_workers=4 --batch_size=512 \
+  --source="openclip" --from_pretrained="xlm-roberta-base-ViT-B-32@laion5b_s13b_b90k" \
+  --out_file="results/babel-imagenet/openclip-xlmrb-vitb32"
 ```
 
-List of arguments:
+#### Retrieval
 ```shell
-python eval_scripts/eval.py --help
+python run_retrieval.py --image_folder=$image_folder --dataset_file="./data/xm3600.json"\
+  --num_workers=4 --batch_size=512 \
+  --source="openclip" --from_pretrained="xlm-roberta-base-ViT-B-32@laion5b_s13b_b90k" \
+  --out_file="results/retrieval/xm3600/openclip-xlmrb-vitb32"
 ```
 
-### Reproduce the data
+In [evaluation_scripts](evaluation_scripts), we have scripts to replicate evaluation for all models we tested.
+
+#### New Models
+Our code is easy to extend for new models:
+
+* HuggingFace and open_clip models are supported out of the box with `--source="huggingface"|"openclip"` and
+`--from_pretrained="$huggingface_model"|"$openclip_model@$pretrained"`
+* Other models have to implement the [`CLIP` interface](benchmark/models/__init__.py) and add themselve to `get_model()` [here](benchmark/models/__init__.py).
+
+
+
+### Reproducing the data
 **Labels**  
 Our data creation script can be found [here](data_scripts/dataset_creation_rpc.py).
 We use the RPC mode of BabelNet, see [here](https://pypi.org/project/babelnet/) for more details on how to request
