@@ -1,7 +1,7 @@
-torch
-torchvision
-transformers
-Pillow
-sentence-transformers
-open-clip-torch
-multilingual-clip
+torch>=2.1.0
+torchvision>=0.16.0
+Pillow>=9.5.0
+transformers>=4.36.2
+open-clip-torch>=2.23.0
+sentence-transformers>=2.2.2  # optional, depends on model used
+multilingual-clip>=1.0.10  # optional, depends on model used
