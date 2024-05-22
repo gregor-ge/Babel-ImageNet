@@ -5,10 +5,10 @@ This is the repository for our benchmark [Babel-ImageNet: Massively Multilingual
 Vision-and-language (VL) models with separate encoders for each modality (e.g., CLIP) have become the go-to models for zero-shot image classification and image-text retrieval. 
 The bulk of the evaluation of these models is, however, performed with English text only: the costly creation of language-specific image-caption datasets has limited multilingual VL benchmarks to a handful of high-resource languages.  
 
-We introduce Babel-ImageNet, a massively multilingual benchmark that offers (partial) translations of 1000 ImageNet labels to 92 languages, built without resorting to machine translation (MT) or requiring manual annotation. 
+We introduce Babel-ImageNet, a massively multilingual benchmark that offers (partial) translations of 1000 ImageNet labels to over 100 languages, built without resorting to machine translation (MT) or requiring manual annotation. 
 We instead automatically obtain reliable translations of ImageNet concepts by linking them -- via shared WordNet synsets -- to BabelNet, a massively multilingual lexico-semantic network.
 
-We evaluate ~~8~~ 13 different publicly available multilingual CLIP models on zero-shot image classification (ZS-IC) for each of the 92 Babel-ImageNet languages, demonstrating a significant gap between English ImageNet performance and that of high-resource languages (e.g., German or Chinese), and an even bigger gap for low-resource languages (e.g., Sinhala or Lao). 
+We evaluate13 different publicly available multilingual CLIP models on zero-shot image classification (ZS-IC) for each of the 100 Babel-ImageNet languages chosen for analysis, demonstrating a significant gap between English ImageNet performance and that of high-resource languages (e.g., German or Chinese), and an even bigger gap for low-resource languages (e.g., Sinhala or Lao). 
 Crucially, we show that the models' ZS-IC performance on Babel-ImageNet highly correlates with their performance in image-text retrieval, validating that Babel-ImageNet is suitable for estimating the quality of the multilingual VL representation spaces for the vast majority of languages that lack gold image-text data.  
 
 
